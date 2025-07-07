@@ -8,7 +8,7 @@ def test_create_order():
     response = client.post("/orders/", json=[{"product_id": 1, "quantity": 1}], params={"user_id": 1})
     assert response.status_code == 200
     data = response.json()
-    assert data["status"] == "PLACED"
+    assert data["status"] == "placed"
 
     track = client.get(f"/orders/{data['id']}/tracking")
     assert track.status_code == 200
