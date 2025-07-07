@@ -6,5 +6,6 @@ python-multipart
 python-jose
 pydantic
 pydantic-settings
+email-validator
 pytest
 httpx
