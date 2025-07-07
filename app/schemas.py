@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
 from typing import List, Optional
 from datetime import datetime
 
@@ -22,8 +22,7 @@ class User(UserBase):
     is_admin: bool
     profile_image: Optional[str] = None
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class ProductBase(BaseModel):
     name: str
@@ -40,8 +39,7 @@ class Product(ProductBase):
     variants: List["ProductVariant"] = []
     reviews: List["Review"] = []
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class OrderItem(BaseModel):
     product_id: int
@@ -55,16 +53,14 @@ class Order(BaseModel):
     total: float
     items: List[OrderItem] = []
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Category(BaseModel):
     id: int
     name: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ProductVariant(BaseModel):
@@ -73,8 +69,7 @@ class ProductVariant(BaseModel):
     price: float
     stock: int
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Review(BaseModel):
@@ -85,8 +80,7 @@ class Review(BaseModel):
     comment: Optional[str] = None
     created_at: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class PromoCode(BaseModel):
@@ -95,8 +89,7 @@ class PromoCode(BaseModel):
     discount_percent: int
     active: bool
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class DeliverySlot(BaseModel):
@@ -104,8 +97,7 @@ class DeliverySlot(BaseModel):
     slot_time: str
     available: bool
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
-Product.update_forward_refs()
+Product.model_rebuild()
