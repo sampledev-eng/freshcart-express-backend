@@ -1,15 +1,14 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Float, DateTime, Enum, Text
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Float, DateTime, Enum as SqlEnum, Text
+import enum
 from sqlalchemy.orm import relationship
 
 from datetime import datetime
 from .db import Base
 
-class OrderStatusEnum(str, Enum):
-    PLACED = 'PLACED'
-    PACKED = 'PACKED'
-    DISPATCHED = 'DISPATCHED'
-    DELIVERED = 'DELIVERED'
-    CANCELLED = 'CANCELLED'
+class OrderStatusEnum(enum.Enum):
+    PLACED = "placed"
+    SHIPPED = "shipped"
+    DELIVERED = "delivered"
 
 class User(Base):
     __tablename__ = 'users'
@@ -42,7 +41,7 @@ class Order(Base):
     __tablename__ = 'orders'
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
-    status = Column(Enum(OrderStatusEnum), default=OrderStatusEnum.PLACED)
+    status = Column(SqlEnum(OrderStatusEnum), default=OrderStatusEnum.PLACED)
     created_at = Column(DateTime, default=datetime.utcnow)
     total = Column(Float, default=0)
     delivery_slot_id = Column(Integer, ForeignKey('delivery_slots.id'), nullable=True)
